@@ -7,25 +7,23 @@ parseInput s = (l,r)
           l = read (head ss) :: Int
           r = read (last ss) :: Int
 
-part1 :: [(Int, Int)] -> Int
-part1 xs = sum $ zipWith (\x y -> abs (x - y)) lhs rhs
-    where lhs = sort $ map fst xs
-          rhs = sort $ map snd xs
+part1 :: ([Int], [Int]) -> Int
+part1 (lhs, rhs) = sum $ zipWith (\x y -> abs (x - y)) lhs rhs
 
 countIf :: Eq a => [a] -> a -> Int
 countIf xs x = length $ filter (== x) xs
 
-part2 :: [(Int, Int)] -> Int
-part2 xs = sum $ zipWith (*) lhs rhs
-    where lhs = map fst xs
-          rhs = map (countIf (map snd xs)) lhs
+part2 :: ([Int], [Int]) -> Int
+part2 (lhs, rhs) = sum $ zipWith (*) lhs rhs'
+    where rhs' = map (countIf rhs) lhs
 
 main :: IO ()
 main = do
   f <- readFile "../input/input01.txt"
   let s = lines f
   let q = map parseInput s
+  let r = (sort $ map fst q, sort $ map snd q)
   putStr "Show 1: "
-  print $ part1 q
+  print $ part1 r
   putStr "Show 2: "
-  print $ part2 q
+  print $ part2 r
