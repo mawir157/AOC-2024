@@ -1,0 +1,23 @@
+# Ignore input files
+/input/*
+# Ignore vscode files
+/.vscode/*
+# Haskell build files
+/Haskell/*
+!/Haskell/*.hs
+!/Haskell/run.sh
+# Go files
+/Go/*
+!/Go/*/
+!/Go/*.go
+!/Go/run.sh
+# Rust build files
+/Rust/*
+!/Rust/src/
+!/Rust/Cargo.toml
+!/Rust/run.sh
+# C++ files
+/C++/*
+!/C++/*.cpp
+!/C++/*.h
+!/C++/run.sh
