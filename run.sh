@@ -1,10 +1,10 @@
 figlet Advent of Code -w 80 -c
 figlet 2024 -w 80 -c
 
-# figlet Haskell -w 80 -c
-# cd Haskell
-# ./run.sh $1
-# cd ..
+figlet Haskell -w 80 -c
+cd Haskell
+./run.sh $1
+cd ..
 
 figlet Go -w 80 -c
 cd Go
