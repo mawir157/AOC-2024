@@ -1,4 +1,4 @@
-#ifdef DAY01
+#ifdef DAY02
 
 #include "AH.h"
 
