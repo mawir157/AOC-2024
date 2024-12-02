@@ -251,7 +251,7 @@ func MakeRange(min, max int) []int {
 }
 
 func Concat(arr1, arr2 []int) (out []int) {
-	out = make([]int, len(arr1)+len(arr2))
+	out = []int{}
 	out = append(out, arr1[:]...)
 	out = append(out, arr2[:]...)
 
@@ -298,4 +298,28 @@ func LCM(a, b int, integers ...int) int {
 	}
 
 	return result
+}
+
+func SliceDiff(v []int) []int {
+	if len(v) <= 1 {
+		return []int{}
+	}
+	diff := []int{}
+	for i := 0; i < len(v)-1; i++ {
+		diff = append(diff, v[i+1]-v[i])
+	}
+
+	return diff
+}
+
+func SliceDrop(v []int, n int) []int {
+	if len(v) <= 1 {
+		return []int{}
+	}
+	if n < 0 || n > len(v) {
+		return v
+	}
+
+	return Concat(v[:n], v[n+1:])
+
 }
