@@ -32,11 +32,9 @@ namespace Day02
         const int pos = diff[0] > 0;
         for (auto & v: diff) {
             if ((v > 0) != pos) {
-                std::cout<< "a\n";
                 return false;
             }
             if ((std::abs(v) < 1) || (std::abs(v) > 3)) {
-                std::cout<< "b\n";
                 return false;
             }
         }
