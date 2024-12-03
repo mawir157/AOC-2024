@@ -11,9 +11,6 @@ namespace Day03
 		bool on = true;
 		std::regex mul_regex("mul\\([0-9]+,[0-9]+\\)|do\\(\\)|don't\\(\\)");
 
-		std::sregex_iterator iter(s.begin(), s.end(), mul_regex);
-    	std::sregex_iterator end;
-
 		std::smatch regex_match;
 		while (std::regex_search (s,regex_match,mul_regex)) {
 			auto p = regex_match.str(0);

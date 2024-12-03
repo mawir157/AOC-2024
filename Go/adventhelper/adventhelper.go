@@ -163,13 +163,13 @@ func SetRuneAt(s string, r rune, n int) string {
 }
 
 // Tail
-func TrimFirstRune(s string) string {
+func Tail(s string) string {
 	rs := []rune(s)
 	return string(rs[1:])
 }
 
 // Init
-func TrimLastRune(s string) string {
+func Init(s string) string {
 	l := len(s)
 	rs := []rune(s)
 	return string(rs[:(l - 1)])
