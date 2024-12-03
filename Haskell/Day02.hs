@@ -6,7 +6,8 @@ parseInput ::String -> [Int]
 parseInput s = map read $ splitOn " " s
 
 diff :: [Int] -> [Int]
-diff [x] = []
+diff [] = []
+diff [_] = []
 diff (x:y:xs) = [x-y] ++ diff (y:xs)
 
 valid :: Bool -> [Int] -> Bool

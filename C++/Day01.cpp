@@ -28,10 +28,8 @@ namespace Day01
 	{
 		int s = 0;
 		std::map<int, int> f;
-		for (auto v : lhs)
-		{
-			if (f.count(v) == 0)
-			{
+		for (auto v : lhs) {
+			if (f.count(v) == 0) {
 				for (auto u : rhs) {
 					if (u == v)
 						f[v]++;
@@ -52,8 +50,7 @@ namespace Day01
 
 		int part1 = 0;
 		int part2 = freq(lhs, rhs);
-		for (size_t i = 0; i <  inputLines.size(); i++)
-		{
+		for (size_t i = 0; i <  inputLines.size(); i++) {
 			part1 += std::abs(lhs[i] - rhs[i]);
 		}
 

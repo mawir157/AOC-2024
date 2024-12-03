@@ -15,7 +15,7 @@
 // #include <memory>
 #include <numeric>
 // #include <queue>
-// #include <regex>
+#include <regex>
 #include <string>
 #include <sstream>
 #include <set>

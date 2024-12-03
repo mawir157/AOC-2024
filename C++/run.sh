@@ -5,9 +5,9 @@ else
   day=-1
 fi
 
-if test -f aoc2023;
+if test -f aoc2024;
 then
-	rm -rf aoc2023
+	rm -rf aoc2024
 fi
 
 if [ $day -gt 0 ]
@@ -15,10 +15,10 @@ then
 	if test -f Day$day.cpp;
 	then
 		echo "compiling single day..."
-		g++ *.cpp -O2 -o aoc2023 -std=c++17 -DDAY$day -Wall -Wextra -Wunused-variable
+		g++ *.cpp -O2 -o aoc2024 -std=c++17 -DDAY$day -Wall -Wextra -Wunused-variable
 		echo "done."
-		./aoc2023
-		rm -rf aoc2023
+		./aoc2024
+		rm -rf aoc2024
 	else
 		echo "Day" $day "does not exist"
 	fi
@@ -39,11 +39,9 @@ else
 			fi
 		fi
 	done
-	echo "compiling all days..."
-	g++ *.cpp -O2 -o aoc2023 -std=c++17 $COMPILERSTRING
-	echo "done."
-	./aoc2023
-	rm -rf aoc2023
+	g++ *.cpp -O2 -o aoc2024 -std=c++17 $COMPILERSTRING
+	./aoc2024
+	rm -rf aoc2024
 	if [ "$missing" != "" ]
 	then
 		echo "Missing days = ["$missing"]"
