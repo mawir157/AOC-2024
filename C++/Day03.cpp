@@ -5,7 +5,7 @@
 namespace Day03
 {
 
-	std::pair<int, int> FindMul(std::string s)
+	std::pair<int, int> findMul(std::string s)
 	{
 		int sum1 = 0, sum2 = 0;
 		bool on = true;
@@ -40,7 +40,7 @@ namespace Day03
 	{
 		auto inputLines = AH::ReadTextFile(filename);
 		auto s = std::accumulate(inputLines.begin(), inputLines.end(), std::string(""));
-		auto [p1,p2] = FindMul(s);
+		auto [p1,p2] = findMul(s);
 
 		AH::PrintSoln(3, p1, p2);
 
