@@ -39,7 +39,6 @@ main :: IO ()
 main = do
     f <- readFile "../input/input04.txt"
     let s = lines f
-    let part1 = scanRows "XMAS" s
-    let ts = concatMap triples . map transpose $ triples s
+    let ts = concatMap (triples . transpose) $ triples s
 
     printSoln 1 (findWord "XMAS" s) (length (filter hasCross ts))
