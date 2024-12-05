@@ -41,4 +41,4 @@ main = do
     let s = lines f
     let ts = concatMap (triples . transpose) $ triples s
 
-    printSoln 1 (findWord "XMAS" s) (length (filter hasCross ts))
+    printSoln 5 (findWord "XMAS" s) (length (filter hasCross ts))
