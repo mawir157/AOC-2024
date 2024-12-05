@@ -87,7 +87,7 @@ func Run() {
 
 	part1, part2 := findWord2(g, "XMAS"), findX(g)
 
-	AH.PrintSoln(1, part1, part2)
+	AH.PrintSoln(4, part1, part2)
 
 	return
 }

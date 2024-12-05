@@ -21,7 +21,7 @@ namespace Day05
 		return rs;
 	}
 
-	std::vector<std::vector<int>> parseBook(const std::string s) {
+	std::vector<std::vector<int>> parseBooks(const std::string s) {
 		std::vector <std::vector<int>> bs;
 		const auto ss = AH::Split(s, '#');
 		for (auto r : ss) {
@@ -37,69 +37,48 @@ namespace Day05
 		return bs;
 	}
 
-	bool isThisBookAnyGood(
+	std::pair<std::vector<int>, int> sortBook (
 		const std::vector<Rule> rs,
 		const std::vector<int> b
 	)
 	{
-		for (size_t i = 0; i < b.size() - 1; i ++) {
-			const auto p1 = b[i];
-			for (size_t j = i + 1; j < b.size(); j++) {
-				const auto p2 = b[j];
+		std::vector<int>new_book = b;
+		int counter = 0;
+		// do n bubble sorts cause i am an scrub
+		for (size_t iters = 0; iters < b.size(); ++iters) {
+			for (auto  p1 = new_book.begin(); p1 != new_book.end() - 1; p1++) {
+				for (auto p2 = p1 + 1; p2 != new_book.end(); p2++) {
 
-				// does this breach a rule?
-				for (auto r : rs) {
-					if ((r.first == p2) && (r.second == p1)) {
-						return false;
+					// does this breach a rule?
+					for (auto r : rs) {
+						if ((r.first == *p2) && (r.second == *p1)) {
+							std::iter_swap(p1, p2);
+							counter++;
+						}
 					}
 				}
-			}
+			}		   
 		}
-		
-		return true;
+
+		return std::make_pair(new_book, counter);
 	}
-
-    std::vector<int> sortBook (
-		const std::vector<Rule> rs,
-		const std::vector<int> b
-	)
-    {
-        std::vector<int>new_book = b;
-        // do n bubble sorts cause i am an scrub
-        for (size_t iters = 0; iters < b.size(); ++iters) {
-            for (auto  p1 = new_book.begin(); p1 != new_book.end() - 1; p1++) {
-                for (auto p2 = p1 + 1; p2 != new_book.end(); p2++) {
-
-                    // does this breach a rule?
-                    for (auto r : rs) {
-                        if ((r.first == *p2) && (r.second == *p1)) {
-                            std::iter_swap(p1, p2);
-                            break;
-                        }
-                    }
-                }
-            }           
-        }
-
-        return new_book;
-    }
 
 	int Run(const std::string& filename)
 	{
 		const auto is = AH::ReadTextFile(filename);
 		const auto ss = AH::ParseLineGroups(is ,'#');
 		const auto rules = parseRules(ss[0]);
-		const auto books = parseBook(ss[1]);
+		const auto books = parseBooks(ss[1]);
 
-        int part1 = 0;
-        int part2 = 0;
+		int part1 = 0;
+		int part2 = 0;
 		for (auto book : books) {
-			if (isThisBookAnyGood(rules, book)) {
-                part1 += book[book.size() / 2];
+			auto [ordered, count] = sortBook(rules, book);
+			if (count == 0) {
+				part1 += ordered[book.size() / 2];
 			} else {
-                auto fixed_book = sortBook(rules, book);
-                part2 += fixed_book[fixed_book.size() / 2];
-            }
+				part2 += ordered[book.size() / 2];
+			}
 		}
 
 		AH::PrintSoln(5, part1, part2);
