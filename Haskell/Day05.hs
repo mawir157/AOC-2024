@@ -13,7 +13,7 @@ makeBook s = map read ss
 
 bubbleOnce :: [(Int, Int)] -> [Int] -> [Int]
 bubbleOnce rules (x:y:xs)
-  | (y,x) `elem`  rules = y : bubbleOnce rules (x:xs)
+  | (y,x) `elem` rules = y : bubbleOnce rules (x:xs)
   | otherwise = x : bubbleOnce rules (y:xs)
 bubbleOnce _ [x] = [x]
 bubbleOnce _ [] = []

@@ -7,7 +7,8 @@ namespace Day05
 
 	typedef std::pair<int,int> Rule;
 	
-	std::vector<Rule> parseRules(const std::string s) {
+	std::vector<Rule> parseRules(const std::string s)
+	{
 		std::vector <Rule> rs;
 		const auto ss = AH::Split(s, '#');
 
@@ -21,7 +22,8 @@ namespace Day05
 		return rs;
 	}
 
-	std::vector<std::vector<int>> parseBooks(const std::string s) {
+	std::vector<std::vector<int>> parseBooks(const std::string s)
+	{
 		std::vector <std::vector<int>> bs;
 		const auto ss = AH::Split(s, '#');
 		for (auto r : ss) {
