@@ -12,7 +12,7 @@ if' False _ y = y
 zipWithFn :: (a -> b) -> [a] -> [(a,b)]
 zipWithFn fn as  = zip as (map fn as)
 
-printSoln :: (Show a) => Integer -> a ->  a -> IO()
+printSoln :: (Show a, Show b) => Integer -> a ->  b -> IO()
 printSoln n p1 p2 = 
     do putStrLn ("Day " ++ show n)
        putStrLn ("  Part 1: " ++ show p1)

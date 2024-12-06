@@ -58,10 +58,10 @@ namespace Day06
 
 	bool path(Guard & g, const Grid & grid)
 	{
-	   int r_max = grid.size();
-	   int c_max = grid[0].size();
+		int r_max = grid.size();
+		int c_max = grid[0].size();
 
-	   while (g.loc.r < r_max && g.loc.r >= 0 &&
+		while (g.loc.r < r_max && g.loc.r >= 0 &&
 			  g.loc.c < c_max && g.loc.c >= 0) {
 
 			if (g.visited.count(g.loc)) { // we've been here before..

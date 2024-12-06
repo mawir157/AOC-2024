@@ -159,7 +159,7 @@ func RuneAt(str string, n int) (r rune) {
 }
 
 func SetRuneAt(s string, r rune, n int) string {
-	return s[:n] + string(r) + s[n:]
+	return s[:n] + string(r) + s[n+1:]
 }
 
 // Tail
