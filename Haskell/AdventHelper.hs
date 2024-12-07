@@ -1,6 +1,6 @@
 module AdventHelper where
-import Data.List
-import Data.List.Split
+import Data.List (foldl')
+import Data.List.Split (splitOn)
 
 splitOnAnyOf :: Eq a => [[a]] -> [a] -> [[a]]
 splitOnAnyOf ds xs = foldl' (\ys d -> ys >>= splitOn d) [xs] ds

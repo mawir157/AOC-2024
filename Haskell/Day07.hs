@@ -5,7 +5,7 @@ import Data.List.Split (splitOn)
 parseInput :: String -> (Int, [Int])
 parseInput s = (t, a)
     where ss = splitOn ": " s
-          t = read $ head ss ::Int
+          t = read $ head ss :: Int
           a = map  read $ splitOn " " $ ss!!1 :: [Int]
 
 countDigits :: Int -> Int
