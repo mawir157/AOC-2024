@@ -29,7 +29,7 @@ namespace Day07
 		return x * AH::IntPow(10, n) + y;
 	}
 
-	int countdown(
+	bool countdown(
 		int64_t acc,
 		size_t ptr,
 		std::pair<int64_t, std::vector<int64_t>> pr,
@@ -38,20 +38,20 @@ namespace Day07
 		auto target = pr.first;
 		auto arr = pr.second;
 		if (acc > target) {
-			return 0;
+			return false;
 		}
 		if (arr.size() == ptr) {
-			return (acc == target) ? 1 : 0;
+			return (acc == target);
 		}
 
 		auto x = arr[ptr];
 
 		if (part2) {
-			return countdown(acc + x, ptr+1, pr, true) + 
-				   countdown(acc * x, ptr+1, pr, true) + 
+			return countdown(acc + x, ptr+1, pr, true) || 
+				   countdown(acc * x, ptr+1, pr, true) || 
 				   countdown(concatInts(acc, x), ptr+1, pr, true);
 		} else {
-			return countdown(acc + x, ptr+1, pr) + 
+			return countdown(acc + x, ptr+1, pr) ||
 				   countdown(acc * x, ptr+1, pr);
 		}
 	}
@@ -62,12 +62,10 @@ namespace Day07
 		int64_t p1 = 0, p2 = 0;
 		for (auto s : ss) {
 			auto pr = parseInput(s);
-			auto i1 = countdown(0,0,pr);
-			if (i1 != 0) {
+			if (countdown(0,0,pr)) {
 				p1 += pr.first;
 			}
-			auto i2 = countdown(0,0,pr,true);
-			if (i2 != 0) {
+			if (countdown(0,0,pr,true)) {
 				p2 += pr.first;
 			}
 		}
