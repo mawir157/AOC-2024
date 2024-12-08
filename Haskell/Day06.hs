@@ -48,14 +48,14 @@ takeUntilStationary (x:y:xs)
     | x == y = [x]
     | otherwise = x : takeUntilStationary (y:xs)
 
-part1 :: Grid -> Guard -> Int
-part1 grid g = length $ nub $ map fst path
+part1 :: Grid -> Guard -> [(Int, Int)]
+part1 grid g = nub $ map fst path
     where path = takeUntilStationary $ iterate (move (-1,-1) grid) g
 
 part2 :: Grid -> Guard -> (Int, Int) -> Bool
-part2 grid g q = length maxPath == 10000
+part2 grid g q = length maxPath == 7500
     where path = takeUntilStationary $ iterate (move q grid) g
-          maxPath = take 10000 path
+          maxPath = take 7500 path
 
 getOpenCells :: Grid -> (Int, Int) ->  Bool
 getOpenCells g p
@@ -69,9 +69,8 @@ main = do
     f <- readFile "../input/input06.txt"
     let grid = lines f
     let guard = findGuard 0 grid
-    let p1 = part1 grid guard
-    let pairs = [(x,y) | x <- [0..130], y <- [0..130]]
-    let openPos = filter (getOpenCells grid) pairs
+    let path = part1 grid guard
+    let openPos = filter (getOpenCells grid) path
     let p2 = length $ filter (part2 grid guard) openPos
 
-    printSoln 6 p1 p2
+    printSoln 6 (length path) p2

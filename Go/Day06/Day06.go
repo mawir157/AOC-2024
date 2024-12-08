@@ -86,7 +86,7 @@ func path(g Guard, grid Grid) (Guard, bool) {
 	return g, false
 }
 
-func findUniqes(m map[Pos]int) int {
+func findUniqes(m map[Pos]int) (int, map[Pos]int) {
 	unique := make(map[Pos]int)
 	for p, _ := range m {
 		pp := p
@@ -94,23 +94,22 @@ func findUniqes(m map[Pos]int) int {
 		unique[pp]++
 	}
 
-	return len(unique)
+	return len(unique), unique
 }
 
-func part2(guard Guard, grid Grid) (count int) {
+func part2(guard Guard, grid Grid, pt map[Pos]int) (count int) {
 	g_pos := guard.loc
-	for r, row := range grid {
-		for c, char := range row {
-			guard.loc = g_pos
-			clear(guard.visited)
-			if char == '.' {
-				grid[r] = AH.SetRuneAt(row, '#', c)
-				_, good := path(guard, grid)
-				if good {
-					count++
-				}
-				grid[r] = AH.SetRuneAt(row, '.', c)
+	for p, _ := range pt {
+		guard.loc = g_pos
+		clear(guard.visited)
+		char := grid[p.r][p.c]
+		if char == '.' {
+			grid[p.r] = AH.SetRuneAt(grid[p.r], '#', p.c)
+			_, good := path(guard, grid)
+			if good {
+				count++
 			}
+			grid[p.r] = AH.SetRuneAt(grid[p.r], '.', p.c)
 		}
 	}
 
@@ -121,9 +120,8 @@ func Run() {
 	grid, _ := AH.ReadStrFile("../input/input06.txt")
 	guard := findGuard(grid)
 	finished, _ := path(guard, grid)
-	p1 := findUniqes(finished.visited)
-
-	p2 := part2(guard, grid)
+	p1, unqs := findUniqes(finished.visited)
+	p2 := part2(guard, grid, unqs)
 
 	AH.PrintSoln(6, p1, p2)
 

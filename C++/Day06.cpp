@@ -105,7 +105,7 @@ namespace Day06
 		return false; // never hit
 	}
 
-	int findUniquePos(const std::map<Pos, int> visited)
+	std::map<Pos, int> findUniquePos(const std::map<Pos, int> visited)
 	{
 		std::map<Pos, int> unique;
 		for (auto [k, v] : visited) {
@@ -114,23 +114,27 @@ namespace Day06
 			unique[p]++;
 		}
 
-		return (int)unique.size();
+		return unique;
 	}
 
-	int part2(const Grid & grid, const Guard guard) {
+	int part2(const Grid & grid, const Guard guard, const std::map<Pos, int> pt) {
 		int counter = 0;
-		for (int r = 0; r < (int)grid.size(); r++) {
-			for (int c = 0; c < (int)grid[0].size(); c++) {
-				Grid new_grid = grid;
-				Guard new_guard = guard;
-				if (new_grid[r][c] == '.') {
-					new_grid[r][c] = '#';
-					if (path(new_guard, new_grid)) {
-						counter++;
-					}
+		int debug1 = 0;
+		int debug2 = 0;
+		std::cout << pt.size() << "\n";
+		for (auto [p, _] : pt) {
+			debug1++;
+			Grid new_grid = grid;
+			Guard new_guard = guard;
+			if (new_grid[p.r][p.c] == '.') {
+				debug2++;
+				new_grid[p.r][p.c] = '#';
+				if (path(new_guard, new_grid)) {
+					counter++;
 				}
 			}
 		}
+		std::cout << debug1 << "," << debug2 << "\n;";
 		return counter;
 	}
 
@@ -139,11 +143,11 @@ namespace Day06
 		const auto grid = AH::ReadTextFile(filename);
 		auto grd = findGuard(grid);
 		path(grd, grid);
-		int p1 =  findUniquePos(grd.visited);
+		auto path =  findUniquePos(grd.visited);
 		grd = findGuard(grid);
-		int p2 = part2(grid, grd);
+		int p2 = part2(grid, grd, path);
 
-		AH::PrintSoln(6, p1, p2);
+		AH::PrintSoln(6, path.size(), p2);
 
 		return 0;
 	}

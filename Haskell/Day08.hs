@@ -51,8 +51,7 @@ main = do
     f <- readFile "../input/input08.txt"
     let gd = lines f
     let as = findAntennae 0 gd
-    let m = M.empty
-    let am = M.elems $ foldl insertMap m as
+    let am = M.elems $ foldl insertMap M.empty as
     let p1 = concatMap (findAntiNodes1 (length gd, length $ head gd)) am
     let p2 = concatMap (findAntiNodes2 (length gd, length $ head gd)) am
 
