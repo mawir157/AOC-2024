@@ -119,22 +119,16 @@ namespace Day06
 
 	int part2(const Grid & grid, const Guard guard, const std::map<Pos, int> pt) {
 		int counter = 0;
-		int debug1 = 0;
-		int debug2 = 0;
-		std::cout << pt.size() << "\n";
 		for (auto [p, _] : pt) {
-			debug1++;
 			Grid new_grid = grid;
 			Guard new_guard = guard;
 			if (new_grid[p.r][p.c] == '.') {
-				debug2++;
 				new_grid[p.r][p.c] = '#';
 				if (path(new_guard, new_grid)) {
 					counter++;
 				}
 			}
 		}
-		std::cout << debug1 << "," << debug2 << "\n;";
 		return counter;
 	}
 
