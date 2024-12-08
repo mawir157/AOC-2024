@@ -56,7 +56,7 @@ func nodeLines(p1, p2 Pos, r_lim, c_lim int) map[Pos]bool {
 	return ns
 }
 
-func findAnitNodes(g []string, as map[rune]([]Pos)) (int, int) {
+func findAntiNodes(g []string, as map[rune]([]Pos)) (int, int) {
 	nodes1 := make(map[Pos]bool)
 	nodes2 := make(map[Pos]bool)
 	r_lim := len(g)
@@ -93,7 +93,7 @@ func findAnitNodes(g []string, as map[rune]([]Pos)) (int, int) {
 func Run() {
 	grid, _ := AH.ReadStrFile("../input/input08.txt")
 	as := findAntennae(grid)
-	p1, p2 := findAnitNodes(grid, as)
+	p1, p2 := findAntiNodes(grid, as)
 
 	AH.PrintSoln(8, p1, p2)
 
