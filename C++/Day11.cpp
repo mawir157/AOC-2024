@@ -73,8 +73,6 @@ namespace Day11
 		uint64_t p1 = blinkAgain(25, m);
 		uint64_t p2 = blinkAgain(75, m);
 
-		// std::cout << p2 << "\n";
-
 		AH::PrintSoln(11, p1, p2);
 		return 0;
 	}
