@@ -104,8 +104,6 @@ namespace Day14
             quadCount(quads, s);
         }
         int p1 = quads[0] * quads[1] * quads[2] * quads[3]; 
-
-        int smallest = 1'000'000'000;
         int p2 = 0;
         for (p2 = 101*103; p2 > 0; p2--) {
             std::set<Pos> s;
