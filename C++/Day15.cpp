@@ -59,10 +59,11 @@ namespace Day15
 					}
 				} else if (c == '@') {
 					r.r = ri;
-					r.c = 2*ci;
 					if (part1) {
+						r.c = ci;
 						row.emplace_back(SPACE);
 					} else {
+						r.c = 2*ci;
 						row.emplace_back(SPACE);
 						row.emplace_back(SPACE);
 					}  
@@ -118,6 +119,7 @@ namespace Day15
 				return true;
 			}
 		}
+
 		if ((cell == BOXL) || (cell == BOXR)) {
 			if ((c == '<') || (c == '>')) { // moving EW is 'easy'
 				auto box = new_r;
@@ -266,7 +268,6 @@ namespace Day15
 			moveRobot(r2, w2, c);
 		}
 		int p2 = gps(w2);
-
 
 		AH::PrintSoln(15, p1, p2);
 		return 0;
