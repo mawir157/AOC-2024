@@ -53,8 +53,6 @@ namespace Day17
         while (ptr < p.size()) {
             auto ins = p[ptr];
             auto opr = p[ptr+1];
-            // std::cout << "[" << m.A << "|" << m.B << "|" << m.C << "]" <<
-            // ins << "," << opr << "(" << ptr << ")\n";
 
             switch (ins)
             {
@@ -130,46 +128,75 @@ namespace Day17
             default:
                 break;
             }
-
-            // for (auto o : output) {
-            //     std::cout << o << " ";
-            // }
-            // std::cout << "\n";
         }
 
         return output;
     }
+
+    int64_t vectorToInt(std::vector<int64_t> vs)
+    {
+        int64_t n = 0;
+        for (auto v : vs) {
+            n *= 8;
+            n += v;
+        }
+
+        return n;
+    }
+
+    Program backTraceSoln(
+        Program & v,
+        int place,
+        bool failed,
+        Machine m,
+        const Program & prg
+    )
+    {
+        if ((place >= (int)v.size()) || (place < 0)) {
+            return v;
+        }
+        
+        uint64_t start = failed ? v[place] + 1 : v[place];
+        if (failed) {
+            for (int i = place + 1; i < (int)v.size(); i++) {
+                v[i] = 0;
+            }
+        }
+
+        for (uint64_t i = start; i < 8; i++) {
+            v[place] = i;
+            int64_t trial = vectorToInt(v);
+            m.A = trial; m.B = 0; m.C = 0;
+            auto test = runProgram(m, prg);
+            // does this produce the write output ?
+            if (test[v.size() - 1 - place] == prg[v.size() - 1 -place]) {
+                // if so try to find the next place
+                return backTraceSoln(v, place+1, false, m, prg);
+            }
+        }
+        // we haven't found a valid soln so the previous value is wrong
+        return backTraceSoln(v, place-1, true, m, prg);
+    }
     
     int64_t Run(const std::string& filename)
-	{
-		const auto is = AH::ReadTextFile(filename);
+	{ 
+        const auto is = AH::ReadTextFile(filename);
 		auto [m, prg] = parseInput(is);	
-        std::cout << m.A << "|" << m.B << "|" << m.C << "\n";
-        for (auto i : prg) {
-            std::cout << i << ",";
-        }
-        std::cout << "\n";
 
-        auto p1 = runProgram(m,prg);
-        for (auto t : p1) {
-            std::cout << t << ",";
+        auto v1 = runProgram(m,prg);
+        std::string p1 = "";
+        for (auto v : v1) {
+            p1 += std::to_string(v);
+            p1 += ",";
         }
-        std::cout << "\n";
+        p1 = p1.substr(0, p1.size() -1);
 
-        // soln is of the order 8^prg.size()
-        // 8 ^ 16 = 2^32
-        for (int i = 0; i < 10000; i++) {
-            m.A = i;m.B=0;m.C=0;
-            auto p1 = runProgram(m,prg);
-            printf("%d | %o: ",i,i);
-            for (int i = p1.size() - 1; i >= 0; i--) {
-                std::cout << p1[i] << " "; 
-            }
-            std::cout << "\n";
-        }
-		
+        std::vector<int64_t> v(prg.size());
+        
+        auto q = backTraceSoln(v,0,false,m,prg);
+        int64_t p2 = vectorToInt(q);
 
-		AH::PrintSoln(17, 0, 0);
+		AH::PrintSoln(17, p1, p2);
 		return 0;
 	}
 
