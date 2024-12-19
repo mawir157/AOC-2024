@@ -5,12 +5,7 @@
 namespace Day19
 {
 
-	typedef std::unordered_map<std::string, int64_t> memo ;
-	
-	std::vector<std::string> parseBlocks(const std::string ss)
-	{
-		return AH::SplitOnString(ss, ", ");
-	}
+	typedef std::map<std::string, int64_t> memo ;
 
 	int64_t match(
 		const std::vector<std::string> & ts,
@@ -42,7 +37,7 @@ namespace Day19
 	int Run(const std::string& filename)
 	{
 		const auto is = AH::ReadTextFile(filename);
-		auto ts = parseBlocks(is[0]);
+		auto ts = AH::SplitOnString(is[0], ", ");
 		std::vector<std::string> ps;
 		for (int i = 2; i < (int)is.size(); i++) {
 			ps.emplace_back(is[i]);
