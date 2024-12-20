@@ -143,41 +143,30 @@ namespace Day20
 		return std::make_pair(dist, prev);
 	}
 
-	std::map<int, int> findShortCuts(const std::map<Pos, int> dist, const Pos end)
+	std::map<int, int> findShortCuts(
+		const std::map<Pos, int> dist, 
+		const int full_route,
+		const int steps=2)
 	{
-		const int full_route = dist.at(end);
 		std::map<int, int> ss;
-		
+
+		// for each point on the path scan all (less than)
+		// steps*steps possible end  points achievable via short cuts
 		for (auto [p,d] : dist) {
-			Pos scN(p.r - 2, p.c);
-			if (dist.count(scN) != 0) { // this cell is on the path
-				const auto new_route = d + 2 + (full_route - dist.at(scN));
-				if (new_route < full_route) {
-					ss[full_route - new_route]++;
-				}
-			}
-			// E
-			Pos scE(p.r, p.c + 2);
-			if (dist.count(scE) != 0) {
-				const auto new_route = d + 2 + (full_route - dist.at(scE));
-				if (new_route < full_route) {
-					ss[full_route - new_route]++;
-				}
-			}
-			// S
-			Pos scS(p.r + 2, p.c);
-			if (dist.count(scS) != 0) {
-				const auto new_route = d + 2 + (full_route - dist.at(scS));
-				if (new_route < full_route) {
-					ss[full_route - new_route]++;
-				}
-			}
-			// W
-			Pos scW(p.r, p.c - 2);
-			if (dist.count(scW) != 0) {
-				const auto new_route = d + 2 + (full_route - dist.at(scW));
-				if (new_route < full_route) {
-					ss[full_route - new_route]++;
+			for (int dr = -steps; dr <= steps; dr++) {
+				for (int dc = -steps; dc <= steps; dc++) {
+					int dd = abs(dr) + abs(dc);
+					if (dd > steps) {
+						continue;
+					}
+
+					Pos shortcut(p.r + dr, p.c + dc);
+					if (dist.count(shortcut) != 0) { // this cell is on the path
+						const auto new_route = d + dd + (full_route - dist.at(shortcut));
+						if (new_route < full_route) {
+							ss[full_route - new_route]++;
+						}
+					}
 				}
 			}
 		}
@@ -191,13 +180,19 @@ namespace Day20
 
 		auto [grid, start, end] = parseInput(is);	
 		auto [dist, path] = dijkstra(grid, start);
-		auto ss = findShortCuts(dist, end);
+		auto ss1 = findShortCuts(dist, dist.at(end));
 		int p1 = 0;
-		for (auto [p, c] : ss) {
+		for (auto [p, c] : ss1) {
 			p1 += (p >= 100) ? c : 0;
 		}
 
-		AH::PrintSoln(20, p1, 0);
+		auto ss2 = findShortCuts(dist, dist.at(end), 20);
+		int p2 = 0;
+		for (auto [p, c] : ss2) {
+			p2 += (p >= 100) ? c : 0;
+		}
+
+		AH::PrintSoln(20, p1, p2);
 		return 0;
 	}
 
