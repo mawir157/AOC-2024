@@ -6,14 +6,11 @@ namespace Day20
 {
 
 	struct Pos {
-		int r,c; // n = number of time cheated
+		int r,c;
 
 		Pos(int r, int c) : r(r), c(c) {};
 		Pos() : r(0), c(0) {};
 		bool operator==(Pos const& obj) { return ((r == obj.r) && (c == obj.c)); }
-		Pos operator+(Pos const& obj) const { return Pos(r + obj.r, c + obj.c); }
-		// Pos operator-(Pos const& obj) { return Pos(r - obj.r, c - obj.c); }
-		// bool operator!=(Pos const& obj) { return ((r != obj.r) || (c != obj.c)); }
 		bool operator<(Pos const& obj) const {
 			if (r != obj.r) 
 				return r < obj.r;
@@ -100,11 +97,9 @@ namespace Day20
 		return min_p;
 	}
 
-	std::pair<std::map<Pos, int>, std::map<Pos, Pos>>
-	dijkstra(const Grid g, const Pos start)
+	std::map<Pos, int> dijkstra(const Grid g, const Pos start)
 	{
 		std::map<Pos, int> dist;
-		std::map<Pos, Pos> prev;
 		std::set<Pos> Q;
 		std::set<Pos> flagged;
 
@@ -134,13 +129,12 @@ namespace Day20
 				auto alt = dist[minU] + d_step;
 				if (alt < dist[n]) {
 					dist[n] = alt;
-					prev[n] = minU;
 					flagged.insert(n);
 				}
 			}
 		}
 
-		return std::make_pair(dist, prev);
+		return dist;
 	}
 
 	std::map<int, int> findShortCuts(
@@ -179,7 +173,7 @@ namespace Day20
 		const auto is = AH::ReadTextFile(filename);
 
 		auto [grid, start, end] = parseInput(is);	
-		auto [dist, path] = dijkstra(grid, start);
+		auto dist = dijkstra(grid, start);
 		auto ss1 = findShortCuts(dist, dist.at(end));
 		int p1 = 0;
 		for (auto [p, c] : ss1) {
