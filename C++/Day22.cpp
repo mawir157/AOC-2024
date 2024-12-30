@@ -5,9 +5,22 @@
 namespace Day22
 {
 
-	std::vector<int64_t> generateRandomNumbers(int seed, int items)
+	int64_t hashPattern(int64_t v0, int64_t v1, int64_t v2, int64_t v3)
+	{
+		int64_t hash = 
+			20 * 20 * 20 * (v3 + 9) + 
+			20 * 20 * (v2 + 9) + 
+			20 * (v1 + 9) + 
+			(v0 + 9);
+
+		return hash;
+	}
+	
+	std::pair<std::vector<int64_t>, std::map<int64_t, int64_t>>
+	generateRandomNumbers(int seed, int items)
 	{
 		std::vector<int64_t> random_numbers;
+		std::vector<int64_t> diffs;
 		
 		int64_t secret = seed;
 		random_numbers.emplace_back(secret);
@@ -20,57 +33,22 @@ namespace Day22
 			secret &= 0xffffff;
 
 			random_numbers.emplace_back(secret);
-		}
-
-		return random_numbers;
-	}
-
-	std::set<std::vector<int64_t>> possiblePatterns()
-	{
-		std::set<std::vector<int64_t>> patterns;
-		for (int64_t e0 = 0; e0 < 10; e0++) {
-			for (int64_t e1 = 0; e1 < 10; e1++) {
-				for (int64_t e2 = 0; e2 < 10; e2++) {
-					for (int64_t e3 = 0; e3 < 10; e3++) {
-						for (int64_t e4 = 0; e4 < 10; e4++) {
-							std::vector<int64_t> pattern{e1 - e0, e2 - e1, e3 - e2, e4 - e3};
-							patterns.insert(pattern);
-						}
-					}
-				}
+			if (i == 0) {
+				continue;
+			} else {
+				diffs.emplace_back((random_numbers[i] % 10) - (random_numbers[i-1] % 10));
 			}
 		}
 
-		return patterns;
-	}
-
-	int64_t buyBanana(
-		const std::vector<std::vector<int64_t>> & seqs,
-		const std::vector<std::vector<int64_t>> & diffs
-	)
-	{
-		int64_t best_banana = 0;
-		auto patterns = possiblePatterns();
-		for (auto pattern : patterns) {
-			
-			int64_t banana_pattern = 0;
-			int seq_idx=0;
-			for (auto diff : diffs) {
-				std::vector<int64_t>::iterator it;
-				it = std::search(diff.begin(), diff.end(), pattern.data(), pattern.data()+4);
-				if (it != diff.end()) {
-					int idx = 4 + (it-diff.begin());
-					banana_pattern += seqs[seq_idx][idx];
-				}
-				seq_idx++;
+		std::map<int64_t, int64_t> bananaPrices;
+		for (int i = 0; i < (int)random_numbers.size() - 5; i++) {
+			int h = hashPattern(diffs[i], diffs[i+1], diffs[i+2], diffs[i+3]);
+			if (bananaPrices.count(h) == 0) {
+				bananaPrices[h] = random_numbers[i + 4] % 10;
 			}
-			if (banana_pattern >  best_banana) {
-				best_banana = banana_pattern;
-			}
-			
 		}
 
-		return best_banana;
+		return std::make_pair(random_numbers, bananaPrices);
 	}
 
 	int Run(const std::string& filename)	{
@@ -78,25 +56,21 @@ namespace Day22
 
 		int64_t p1 = 0;
 		std::vector<std::vector<int64_t>> seqs;
-		std::vector<std::vector<int64_t>> diffs;
+		std::map<int64_t, int64_t> prices;
 		for (auto i : is) {
 			int v = std::stoi(i);
-			auto seq = generateRandomNumbers(v, 2000);
+			auto [seq, bps] = generateRandomNumbers(v, 2000);
 			p1 += seq.back();
 
-			for (auto & s : seq) {
-				s %= 10;
+			for (auto [k, v] : bps) {
+				prices[k] += v;
 			}
-			std::vector<int64_t> diff;
-			for (int ni = 1; ni < (int)seq.size(); ni++) {
-				diff.emplace_back((seq[ni] % 10) - (seq[ni-1] % 10));
-			}
-
-			diffs.emplace_back(diff);
-			seqs.emplace_back(seq);
 		}
 
-		auto p2 = buyBanana(seqs, diffs);
+		auto p2 = std::max_element(prices.begin(), prices.end(),
+		[](const std::pair<int, int>& p1, const std::pair<int, int>& p2) {
+        	return p1.second < p2.second;}
+		)->second;
  
 		AH::PrintSoln(22, p1, p2);
 		return 0;
