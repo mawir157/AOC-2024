@@ -8,11 +8,7 @@ namespace Day16
 	struct Pos {
 		int r=0,c=0,d=0; // d=0,1,2,3 == N,E,S,W
 
-		// Pos(int r, int c, int d) : r(r), c(c), d(d) {};
-		// Pos() : r(0), c(0), d(0) {};
 		Pos operator+(Pos const& obj) const { return Pos{r + obj.r, c + obj.c, d}; }
-		// Pos operator-(Pos const& obj) { return Pos(r - obj.r, c - obj.c); }
-		// bool operator!=(Pos const& obj) { return ((r != obj.r) || (c != obj.c)); }
 		bool operator==(Pos const& obj) { return ((r == obj.r) && (c == obj.c)); }
 		bool operator<(Pos const& obj) const {
 			if (r != obj.r) 

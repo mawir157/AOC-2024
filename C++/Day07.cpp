@@ -71,7 +71,7 @@ namespace Day07
 		}
 
 
-		AH::PrintSoln(7, p1, p2);
+		AH::PrintSoln(8, p1, p2);
 
 		return 0;
 	}

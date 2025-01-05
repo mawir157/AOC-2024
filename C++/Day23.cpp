@@ -53,10 +53,10 @@ namespace Day23
 		return "ERROR!";
 	}
 
-	std::vector<std::vector<std::string>>
-	findTriangleSubgraphs(const Adj adj, const std::map<std::string, int> labels)
+	int 
+	countTriangleSubgraphs(const Adj adj, const std::map<std::string, int> labels)
 	{
-		std::vector<std::vector<std::string>> subgraphs;
+		int subgraphs = 0;
 
 		for (int i0 = 0; i0 < (int)labels.size(); i0++) {
 			for (int i1 = i0 + 1; i1 < (int)labels.size(); i1++) {
@@ -70,12 +70,18 @@ namespace Day23
 					if (adj[i2][i0] == 0) {
 						continue;
 					}
-					std::vector<std::string> triangle;
-					triangle.emplace_back(find(labels, i0));
-					triangle.emplace_back(find(labels, i1));
-					triangle.emplace_back(find(labels, i2));
 
-					subgraphs.emplace_back(triangle);
+					if (find(labels, i0).at(0) == 't') {
+						subgraphs++;
+						continue;
+					}
+					if (find(labels, i1).at(0) == 't') {
+						subgraphs++;
+						continue;
+					}
+					if (find(labels, i2).at(0) == 't') {
+						subgraphs++;
+					}
 				}
 			}
 		}
@@ -83,9 +89,14 @@ namespace Day23
 		return subgraphs;
 	}
 
+	std::map<int, std::set<int>> nbr_cache;
 
 	std::set<int> nbrs(int idx, Adj adj)
 	{
+		if (nbr_cache.count(idx)) {
+			return nbr_cache.at(idx);
+		}
+		
 		std::set<int> ns;
 		for (int n = 0; n < (int)adj.size(); n++) {
 			if (adj[idx][n] == 1) {
@@ -93,21 +104,25 @@ namespace Day23
 			}
 		}
 
+		nbr_cache[idx] = ns;
+
 		return ns;
 	}
 
 	// Stolen from Wikipedia 'cause I'm a scrub who knows nothing about
 	// computational graph theory
 	void BronKerbosch(
-		std::set<int> R,
-		std::set<int> P,
-		std::set<int> X,
+		std::set<int> & R,
+		std::set<int> & P,
+		std::set<int> & X,
 		const Adj & adj,
-		std::vector<std::set<int>> & results
+		std::set<int> & best
 	)
 	{
 		if (P.empty() && X.empty()) {
-			results.emplace_back(R);
+			if (R.size() > best.size()) {
+				best = R;
+			}
 			return;
 		}
 
@@ -124,7 +139,7 @@ namespace Day23
 			set_intersection(X.begin(), X.end(), NV.begin(), NV.end(),
 			                 std::inserter(XX, XX.begin()));
 
-			BronKerbosch(RR, PP, XX, adj, results);
+			BronKerbosch(RR, PP, XX, adj, best);
 
 			P.erase(v);
 			X.insert(v);
@@ -142,21 +157,11 @@ namespace Day23
 			P.insert(i);
 		}
 
-		std::vector<std::set<int>> results;
-		BronKerbosch(R, P, Q, adj, results);
-
-		size_t max_result = 0;
-		std::set<int> max_graph;
-
-		for (auto r : results) {
-			if (r.size() > max_result) {
-				max_result = r.size();
-				max_graph = r;
-			}
-		}
+		std::set<int> best;
+		BronKerbosch(R, P, Q, adj, best);
 
 		std::vector<std::string> vs;
-		for (auto r : max_graph) {
+		for (auto r : best) {
 			vs.emplace_back(find(labels, r));
 		}
 		std::sort(vs.begin(), vs.end());
@@ -174,17 +179,7 @@ namespace Day23
 		const auto is = AH::ReadTextFile(filename);
 		auto [adj, labels] = buildGraph(is);
 
-		int p1 = 0;
-		auto triangles = findTriangleSubgraphs(adj, labels);
-		for (auto t : triangles) {
-			for (auto node : t) {
-				if (node.at(0) == 't') {
-					p1++;
-					break;
-				}
-			}
-		}
-
+		auto p1 = countTriangleSubgraphs(adj, labels);
 		auto p2 = part2(adj, labels);
 
 		AH::PrintSoln(23, p1, p2);
