@@ -1,3 +1,6 @@
+#ifndef ADVENT_HELPER
+#define ADVENT_HELPER
+
 #pragma once
 
 #include "includes.h"
@@ -14,6 +17,12 @@ namespace AH
 
 		return;
 	}
+
+	enum TIME_UNIT { SEC, MIL, MIC, NAN, NON };
+	void printTime(const TIME_UNIT unit = TIME_UNIT::NON);
+
+	inline std::chrono::steady_clock::time_point start;
+	inline std::chrono::steady_clock::time_point end;
 
 	void PrintSolnFinal(const int day, const uint64_t soln1);
 	std::vector<std::string> ReadTextFile(const std::string& filename);
@@ -34,3 +43,5 @@ namespace AH
 	}
 
 }
+
+#endif // ADVENT_HELPER

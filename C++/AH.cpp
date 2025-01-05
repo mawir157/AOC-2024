@@ -142,4 +142,38 @@ namespace AH
 		return value;
 	}
 
+
+	void printTime(const TIME_UNIT unit)
+	{
+		switch (unit)
+		{
+		case NAN:
+			std::cout << "Time taken = " << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() << "[ns]" << std::endl;
+			break;
+		case MIC:
+			std::cout << "Time taken = " << std::chrono::duration_cast<std::chrono::microseconds>(end - start).count() << "[µs]" << std::endl;
+			break;
+		case MIL:
+			std::cout << "Time taken = " << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << "[ms]" << std::endl;
+			break;
+		case SEC:
+			std::cout << "Time taken = " << std::chrono::duration_cast<std::chrono::seconds>(end - start).count() << "[s]" << std::endl;
+			break;
+		case NON:
+		default:
+	 		auto ns = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
+			if (ns < 10'000) {
+				printTime(NAN);
+			} else if (ns < 10'000'000) {
+				printTime(MIC);
+			} else if (ns < 10'000'000'000) {
+				printTime(MIL);
+			}  else {
+				printTime(SEC);
+			}
+			break;
+		}
+		
+		end = start;
+	}
 }
