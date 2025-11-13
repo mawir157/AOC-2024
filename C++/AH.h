@@ -18,7 +18,7 @@ namespace AH
 		return;
 	}
 
-	enum TIME_UNIT { SEC, MIL, MIC, NAN, NON };
+	enum TIME_UNIT { SEC, MIL, MIC, NANO, NON };
 	void printTime(const TIME_UNIT unit = TIME_UNIT::NON);
 
 	inline std::chrono::steady_clock::time_point start;

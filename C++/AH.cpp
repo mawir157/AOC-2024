@@ -147,7 +147,7 @@ namespace AH
 	{
 		switch (unit)
 		{
-		case NAN:
+		case NANO:
 			std::cout << "Time taken = " << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() << "[ns]" << std::endl;
 			break;
 		case MIC:
@@ -163,7 +163,7 @@ namespace AH
 		default:
 	 		auto ns = std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count();
 			if (ns < 10'000) {
-				printTime(NAN);
+				printTime(NANO);
 			} else if (ns < 10'000'000) {
 				printTime(MIC);
 			} else if (ns < 10'000'000'000) {
