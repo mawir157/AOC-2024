@@ -51,8 +51,7 @@ namespace Day13
 		for (auto s: ss) {
 			Game g;
 			auto ps = AH::Split(s, c);
-			for (auto p : ps) {
-			}
+
 			size_t from = 0;
 			size_t to = 0;
 			std::string p = "";
