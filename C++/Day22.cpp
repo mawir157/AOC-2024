@@ -33,11 +33,7 @@ namespace Day22
 			secret &= 0xffffff;
 
 			random_numbers.emplace_back(secret);
-			if (i == 0) {
-				continue;
-			} else {
-				diffs.emplace_back((random_numbers[i] % 10) - (random_numbers[i-1] % 10));
-			}
+			diffs.emplace_back((random_numbers[i+1] % 10) - (random_numbers[i] % 10));
 		}
 
 		std::map<int64_t, int64_t> bananaPrices;
@@ -55,7 +51,6 @@ namespace Day22
 		const auto is = AH::ReadTextFile(filename);
 
 		int64_t p1 = 0;
-		std::vector<std::vector<int64_t>> seqs;
 		std::map<int64_t, int64_t> prices;
 		for (auto i : is) {
 			int v = std::stoi(i);

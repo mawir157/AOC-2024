@@ -151,7 +151,7 @@ namespace AH
 			std::cout << "Time taken = " << std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count() << "[ns]" << std::endl;
 			break;
 		case MIC:
-			std::cout << "Time taken = " << std::chrono::duration_cast<std::chrono::microseconds>(end - start).count() << "[µs]" << std::endl;
+			std::cout << "Time taken = " << std::chrono::duration_cast<std::chrono::microseconds>(end - start).count() << "[us]" << std::endl;
 			break;
 		case MIL:
 			std::cout << "Time taken = " << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << "[ms]" << std::endl;
