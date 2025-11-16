@@ -16,6 +16,8 @@ func PrintSoln(day int, soln1 interface{}, soln2 interface{}) {
 	fmt.Println("  Part 2:", soln2)
 }
 
+type Set[T comparable] = map[T]bool
+
 // //////////////////////////////////////////////////////////////////////////////
 func ReadStrFile(fname string) (strs []string, err error) {
 	b, err := os.ReadFile(fname)

@@ -10,6 +10,7 @@ import (
 type Pos struct {
 	r, c int
 }
+type Set AH.Set[Pos]
 
 func (p Pos) inBounds(r_lim, c_lim int) bool {
 	return (p.r >= 0) && (p.r < r_lim) && (p.c >= 0) && (p.c < c_lim)
@@ -35,9 +36,9 @@ func nodePair(p1, p2 Pos) (Pos, Pos) {
 	return Pos{p1.r + dr, p1.c + dc}, Pos{p2.r - dr, p2.c - dc}
 }
 
-func nodeLines(p1, p2 Pos, r_lim, c_lim int) map[Pos]bool {
+func nodeLines(p1, p2 Pos, r_lim, c_lim int) Set {
 	dr, dc := p1.r-p2.r, p1.c-p2.c
-	ns := make(map[Pos]bool)
+	ns := make(Set)
 
 	p := p1
 	for p.inBounds(r_lim, c_lim) {
@@ -57,8 +58,8 @@ func nodeLines(p1, p2 Pos, r_lim, c_lim int) map[Pos]bool {
 }
 
 func findAntiNodes(g []string, as map[rune]([]Pos)) (int, int) {
-	nodes1 := make(map[Pos]bool)
-	nodes2 := make(map[Pos]bool)
+	nodes1 := make(Set)
+	nodes2 := make(Set)
 	r_lim := len(g)
 	c_lim := len(g[0])
 

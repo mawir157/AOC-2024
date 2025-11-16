@@ -9,7 +9,7 @@ BUILDTAGS=()
 
 if [ $day -gt 0 ]
 then
-	if test -f Day$day/Day$day.go;
+	if test -f Day$day/Day.go;
 	then
     BUILDTAGS+=("d$day")
 	else
@@ -19,7 +19,7 @@ else
 	missing=""
 	for i in $(seq -f "%02g" 1 25)
 	do
-		if test -f Day$i/Day$i.go;
+		if test -f Day$i/Day.go;
 		then
       BUILDTAGS+=("d$i")
 		else

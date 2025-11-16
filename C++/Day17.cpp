@@ -4,14 +4,17 @@
 
 namespace Day17
 {
+	typedef std::vector<int64_t> Program;
 
 	struct Machine {
 		int64_t A;
 		int64_t B;
 		int64_t C;
+
+		int64_t combo(const int64_t i) const; 
+		std::vector<int64_t> runProgram(const Program p);
 	};
 
-	typedef std::vector<int64_t> Program;
 
 	std::pair<Machine, Program> parseInput(std::vector<std::string> ss)
 	{
@@ -30,23 +33,23 @@ namespace Day17
 		return std::make_pair(m, prg);
 	}
 
-	int64_t combo(int64_t i, Machine m) {
+	int64_t Machine::combo(int64_t i) const {
 		if ((0 <= i) && (i <= 3)) {
 			return i;
 		}
 		if (i == 4) {
-			return m.A;
+			return A;
 		}
 		if (i == 5) {
-			return m.B;
+			return B;
 		}
 		if (i == 6) {
-			return m.C;
+			return C;
 		}
 		return (int64_t)0;// never hit
 	};
 
-	std::vector<int64_t> runProgram(Machine & m, const Program p)
+	std::vector<int64_t> Machine::runProgram(const Program p)
 	{
 		size_t ptr = 0;
 		std::vector<int64_t> output;
@@ -58,53 +61,50 @@ namespace Day17
 			{
 			case 0: //adv
 			{
-				m.A >>= combo(opr, m);
-				ptr += 2;
+				A >>= combo(opr);
 				break;
 			}
 			case 1: //bxl
 			{
-				m.B ^= opr;
-				ptr += 2;
+				B ^= opr;
 				break;
 			}
 			case 2: // bst
 			{
-				m.B = combo(opr, m) % 8;
-				ptr += 2;
+				B = combo(opr) % 8;
 				break;
 			} 
 			case 3: // jnz
 			{
-				ptr = (m.A != 0) ? opr : ptr + 2;
+				ptr = (A != 0) ? opr : ptr + 2;
 				break;
 			}
 			case 4: //bxc
 			{
-				m.B ^= m.C;
-				ptr += 2;
+				B ^= C;
 				break;
 			}
 			case 5: // out
 			{
-				output.emplace_back(combo(opr, m) % 8);
-				ptr += 2;
+				output.emplace_back(combo(opr) % 8);
 				break;
 			}
 			case 6: //bdv
 			{
-				m.B = m.A >> combo(opr, m);
-				ptr += 2;
+				B = A >> combo(opr);
 				break;
 			}
 			case 7: //cdv
 			{
-				m.C = m.A >> combo(opr, m);
-				ptr += 2;
+				C = A >> combo(opr);
 				break;
 			}
 			default:
 				break;
+			}
+
+			if (ins != 3) {
+				ptr += 2;
 			}
 		}
 
@@ -140,8 +140,11 @@ namespace Day17
 			int64_t trial = vectorToInt(v);
 			Machine m;
 			m.A = trial; m.B = 0; m.C = 0;
-			auto test = runProgram(m, prg);
-			// does this produce the write output ?
+			auto test = m.runProgram(prg);
+			if (test.size() != prg.size()) {
+				continue;
+			}
+			// does this produce the right output ?
 			if (test[v.size() - 1 - place] == prg[v.size() - 1 -place]) {
 				// if so try to find the next place
 				return backTraceSoln(v, place+1, false, prg);
@@ -156,7 +159,7 @@ namespace Day17
 		const auto is = AH::ReadTextFile(filename);
 		auto [m, prg] = parseInput(is);	
 
-		auto v1 = runProgram(m,prg);
+		auto v1 = m.runProgram(prg);
 		std::string p1 = "";
 		for (auto v : v1) {
 			p1 += std::to_string(v);

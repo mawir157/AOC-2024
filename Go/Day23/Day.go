@@ -11,7 +11,7 @@ import (
 
 type Adj [][]int
 type Labels map[string]int
-type Set map[int]bool
+type Set AH.Set[int]
 
 var cache = make(map[int]Set)
 
