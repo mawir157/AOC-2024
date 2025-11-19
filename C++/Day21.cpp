@@ -22,7 +22,6 @@ namespace Day21
 	};
 	
 	typedef std::map<char, Pos> lut;
-	lut g_nPad_moves;
 
 	lut initialise_NPad()
 	{
@@ -104,7 +103,6 @@ namespace Day21
 	std::map<std::string, int64_t> expandNumberPad(std::map<std::string, int64_t> pairs)
 	{
 		std::map<std::string, int64_t> new_pairs;
-		std::string instructions = "A";
 		for (auto [k,v] : pairs) {
 			// A*
 			if (k == "AA") {
@@ -225,7 +223,7 @@ namespace Day21
 
 	int64_t score(std::string s0, const lut moves, const int robots)
 	{
-		int64_t i = std::stoi(s0.substr(0, s0.size()-1));
+		int64_t r = std::stoi(s0.substr(0, s0.size()-1));
 		
 		auto robot_input = nPadTo2dPad(s0, moves);
 
@@ -249,7 +247,7 @@ namespace Day21
 			score += v;
 		}
 
-		return i * score;
+		return r * score;
 	}
 	
 	int Run(const std::string& filename)	{
