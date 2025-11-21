@@ -86,6 +86,10 @@ func ParseLineGroups(fname string, sep string) (strs []string, err error) {
 			temp = ""
 		}
 	}
+
+	if len(temp) > 0 {
+		strs = append(strs, temp)
+	}
 	return strs, nil
 }
 
