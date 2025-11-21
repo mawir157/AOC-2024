@@ -38,7 +38,7 @@ namespace Day24
 	)
 	{
 		std::vector<Rule> rules;
-			for (auto s : ss) {
+		for (auto s : ss) {
 			auto ps = AH::SplitOnString(s, " ");
 			Rule r{
 				.lhs=ps[0],
@@ -120,40 +120,6 @@ namespace Day24
 		}
 
 		return score;
-	}
-
-	std::pair<int64_t, int64_t> getInputs(std::map<std::string, Node> nodes)
-	{
-		std::vector<std::pair<std::string, bool>> xs;
-		std::vector<std::pair<std::string, bool>> ys;
-
-		for (auto [k, v] : nodes) {
-			if (k.at(0) == 'x') {
-				xs.emplace_back(k, v.state);
-			} else if (k.at(0) == 'y') {
-				ys.emplace_back(k, v.state);
-			}
-		}
-
-		std::sort(xs.begin(), xs.end(), [](auto &left, auto &right) {
-			return left.first > right.first;
-		});
-		std::sort(ys.begin(), ys.end(), [](auto &left, auto &right) {
-			return left.first > right.first;
-		});
-
-		int64_t x = 0;
-		for (auto [_, v]: xs) {
-			x *= 2;
-			x += int64_t(v ? 1 : 0);
-		}
-		int64_t y = 0;
-		for (auto [_, v]: ys) {
-			y *= 2;
-			y += int64_t(v ? 1 : 0);
-		}
-
-		return std::make_pair(x, y);
 	}
 	
 	int Run(const std::string& filename)	{

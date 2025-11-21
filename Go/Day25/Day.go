@@ -5,7 +5,6 @@ package Day25
 
 import (
 	AH "AoC2024/adventhelper"
-	"fmt"
 )
 
 type KeyLock [5]int
@@ -49,7 +48,6 @@ func parseKeysAndLock(ss []string) ([]KeyLock, []KeyLock) {
 
 func youCompleteMe(ks []KeyLock, ls []KeyLock) int {
 	count := 0
-	fmt.Println(len(ks), len(ls))
 	for _, k := range ks {
 		for _, l := range ls {
 			aPerfectFit := true
@@ -69,5 +67,5 @@ func Run() {
 	ss, _ := AH.ReadStrFile("../input/input25.txt")
 	ks, ls := parseKeysAndLock(ss)
 
-	AH.PrintSoln(9, youCompleteMe(ks, ls), "What will survive of us is love")
+	AH.PrintSoln(25, youCompleteMe(ks, ls), "What will survive of us is love")
 }
